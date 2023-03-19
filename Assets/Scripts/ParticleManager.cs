@@ -30,4 +30,14 @@ public class ParticleManager : MonoBehaviour
 
         }
     }
+
+    public GameObject RequestExclamationSign(){
+        for (int i = 0; i < ExclamationSignList.Count; i++){
+            if (!ExclamationSignList[i].activeSelf){
+                ExclamationSignList[i].SetActive(true);
+                return ExclamationSignList[i];
+            }
+        }
+        return null;
+    }
 }

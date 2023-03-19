@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D PlayerRB;
     [Header("Insert 'GameManager'")]
     [SerializeField] GameManager Manager;
+    [Header("Insert 'Particle Manager'")]
+    [SerializeField] ParticleManager Particle;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +25,17 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 movement = new Vector2(horizontal, vertical);
         PlayerRB.velocity = movement * VelPlayer;
+
+        if (Input.GetKeyDown(KeyCode.Z)){
+            GameObject Exclamation = Particle.RequestExclamationSign();
+            Exclamation.transform.position = new Vector2(transform.position.x, transform.position.y + 0.9f);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Exit")){
+            Manager.LvlComplete();
+        }
     }
 }
