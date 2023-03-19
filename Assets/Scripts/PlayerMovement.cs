@@ -34,6 +34,13 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        if(other.gameObject.CompareTag("Enemy")){
+            GameManager.GameStat = "GameOver";
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
         if(other.gameObject.CompareTag("Exit")){
             Manager.LvlComplete();
         }

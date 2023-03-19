@@ -37,15 +37,24 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F)){
             BloodPosY = 800;
             GameStat = "GameOver";
+            } else if (Input.GetKeyDown(KeyCode.G)){
+                GameStat = "PlayMode";
             }
         //Estado de Juego
         switch (GameStat){
             case "GameOver":
             //Muerte de personaje
             Blood.SetActive(true);
-            BloodPosY -= 1000 * Time.deltaTime;
-            if (Blood.transform.position.y < 80)
+            if (Blood.transform.position.y <= 80){
                 BloodPosY = 80;
+            } else {
+
+                BloodPosY -= 1500 * Time.deltaTime;
+            }
+            break;
+            case "PlayMode":
+            BloodPosY = 800;
+            Blood.SetActive(false);
             break;
         }
     }
