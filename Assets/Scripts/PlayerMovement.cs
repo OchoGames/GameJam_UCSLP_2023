@@ -7,10 +7,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player")]
     [SerializeField] private float VelPlayer;
     [SerializeField] private Rigidbody2D PlayerRB;
-    [Header("Insert 'GameManager'")]
-    [SerializeField] GameManager Manager;
+    
     [Header("Insert 'Particle Manager'")]
     [SerializeField] ParticleManager Particle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,14 +35,16 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.CompareTag("Enemy")){
-            GameManager.GameStat = "GameOver";
+            //GameManager.GameStat = "GameOver";
+            GameManager.Instance.SetNewGameState(GameState.gameOver);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag("Exit")){
-            Manager.LvlComplete();
+            //Manager.LvlComplete();
+            GameManager.Instance.LvlComplete();
         }
     }
 }
