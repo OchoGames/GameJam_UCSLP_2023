@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static float BloodPosY;
     [Header("Estado de juego")]
     [SerializeField] public static string GameStat;
+    [SerializeField] Vector3 AAA;
 
 
     void Awake()
@@ -26,16 +27,16 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BloodPosY = 800;
+        BloodPosY = 1400;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Blood.transform.position = new Vector3 (378.5f, BloodPosY, 0);
+        Blood.transform.position = new Vector3 (400, BloodPosY, AAA.z);
 
         if (Input.GetKeyDown(KeyCode.F)){
-            BloodPosY = 800;
+            BloodPosY = 1400;
             GameStat = "GameOver";
             } else if (Input.GetKeyDown(KeyCode.G)){
                 GameStat = "PlayMode";
@@ -45,15 +46,15 @@ public class GameManager : MonoBehaviour
             case "GameOver":
             //Muerte de personaje
             Blood.SetActive(true);
-            if (Blood.transform.position.y <= 80){
-                BloodPosY = 80;
+            if (Blood.transform.position.y <= 400){
+                BloodPosY = 400;
             } else {
 
-                BloodPosY -= 1500 * Time.deltaTime;
+                BloodPosY -= 2000 * Time.deltaTime;
             }
             break;
             case "PlayMode":
-            BloodPosY = 800;
+            BloodPosY = 1400;
             Blood.SetActive(false);
             break;
         }
