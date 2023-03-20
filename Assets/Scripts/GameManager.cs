@@ -1,79 +1,132 @@
-using System;
 using System.Dynamic;
+using System;
+using System.Net.NetworkInformation;
 using System.Linq.Expressions;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private GameObject Blood;
-    [SerializeField] private float VelBlood;
     [Header("Estado de juego")]
-    [SerializeField] public static string GameStat;
-    [SerializeField] Vector3 AAA;
-    private float SorteoF;
-    [SerializeField] private int SorteoInt;
+    public GameState currentGameState;
+
+    //Paneles de juego
+
+    [Header("animaciones Panel")]
+    [SerializeField] public Animator MenuPanel;
+    [SerializeField] public Animator TitleMenu;
+    [SerializeField] public Animator CreditsPanel;
+    [SerializeField] public Animator GameOverPanel;
 
 
     void Awake()
     {
-        if (GameManager.Instance == null){
-            GameManager.Instance = this;
+        //singleton
+        if (Instance == null)
+        {
+            Instance = this;
             DontDestroyOnLoad(gameObject);
-        } else {
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }
     // Start is called before the first frame update
     void Start()
     {
-        GameObject Blood = GameObject.Find("GameOverBG");
+        SetNewGameState(GameState.mainMenu);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Blood.transform.position = new Vector3(AAA.x, AAA.y, AAA.z);
-        if (Input.GetKeyDown(KeyCode.F)){
-            GameOver();
-            } else if (Input.GetKeyDown(KeyCode.G)){
-                TryAgain();
-            }
-        //Estado de Juego
-        switch (GameStat){
-            case "GameOver":
-            if (Blood.transform.position.y < 420 && Blood.transform.position.y > 380){
-                Blood.transform.position = new Vector3(400, 400, 0);
-                } else {
 
-                Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
-            break;
-
-            case "PlayMode":
-            if (Blood.transform.position.y < -790 && Blood.transform.position.y > -810){
-                Blood.transform.position = new Vector3(400, -800, 0);
-                } else {
-                Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
-            break;
-        }
     }
-    public void GameOver(){
-        Blood.transform.position = new Vector3(400, 1600, 0);
-        GameStat = "GameOver";
-    }
-
-    public void TryAgain(){
-        GameStat = "PlayMode";
-    }
-
 
     public void LvlComplete(){
         print("Nivel Completado");
     }
+
+    public void SetNewGameState(GameState newGameState)
+    {
+        // Esta funcion se utiliza para manejar los estados del juego
+        switch (newGameState)
+        {
+            case GameState.mainMenu:
+                //Time.timeScale = 0;
+                MenuPanel.SetBool("onMenu", true);
+                MenuPanel.SetBool("onMenu", false);
+            break;
+
+            case GameState.inGame:
+
+                Time.timeScale = 1;
+            break;
+
+            case GameState.pause:
+                Time.timeScale = 0;
+            break;
+
+            case GameState.gameOver:
+                GameOverPanel.SetBool("gameOver", true);
+                GameOverPanel.SetBool("gameOver", false);
+                Time.timeScale = 0.7f;
+            break;
+        }
+
+        currentGameState = newGameState;
+    }
+
+/*     public void DisableAllPanels(){
+        //
+        MenuPanel.SetBool("onMenu", false);
+        MenuPanel.SetBool("returnMenu", false);
+        MenuPanel.SetBool("StartVideo", false);
+        //TitleMenu
+        TitleMenu.SetBool("onCredits", false);
+        TitleMenu.SetBool("returnToMenu", false);
+        TitleMenu.SetBool("onMenu", false);
+        //Credits
+        CreditsPanel.SetBool("onCredits", false);
+        CreditsPanel.SetBool("onMenu", false);
+        CreditsPanel.SetBool("returnToMenu", false);
+        //GameOver
+        GameOverPanel.SetBool("tryAgain", false);
+        GameOverPanel.SetBool("onGame", false);
+        GameOverPanel.SetBool("gameOver", false);
+    } */
+
+    //Botones Panel
+
+    public void StartVideo(){
+        print("AAAA");
+        MenuPanel.SetBool("StartVideo", true);
+        MenuPanel.SetBool("StartVideo", false);
+        SetNewGameState(GameState.inGame);
+    }
+    public void StartGame(){
+        SetNewGameState(GameState.inGame);
+    }
+
+    public void Credits(){
+        SetNewGameState(GameState.Credits);
+    }
 }
+
+public enum GameState
+{
+    // Aqui se declaran los estados del juego
+    mainMenu,
+    Credits,
+    inGame,
+    pause,
+    gameOver
+}
+

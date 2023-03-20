@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] ParticleManager Particle;
     private Animator animator;
     [SerializeField] public bool Hide;
+
+    [Header("Paredes")]
+    [SerializeField] GameObject Pared1;
+    [SerializeField] GameObject Pared2;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,12 +65,13 @@ public class PlayerMovement : MonoBehaviour
             newPos.x = 42;
             transform.position = newPos;
         }
+
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.CompareTag("Enemy")){
-            Manager.GameOver();
+            GameManager.Instance.SetNewGameState(GameState.gameOver);
         }
 
     }
@@ -90,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag("Exit")){
-            Manager.LvlComplete();
+            GameManager.Instance.LvlComplete();
         }
 
         if (other.gameObject.CompareTag("Enemy")){
@@ -100,6 +105,12 @@ public class PlayerMovement : MonoBehaviour
 
         if(other.gameObject.CompareTag("Weapon Coin")){
             Destroy(other.gameObject);
+            Pared1.SetActive(true);
         }
+    }
+
+    public void PlayerWin(){
+        Pared1.SetActive(false);
+        Pared2.SetActive(false);
     }
 }
