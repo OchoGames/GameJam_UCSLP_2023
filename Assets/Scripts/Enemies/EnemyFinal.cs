@@ -17,4 +17,9 @@ public class EnemyFinal : MonoBehaviour
     {
         
     }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        print("UwU");
+    }
 }
