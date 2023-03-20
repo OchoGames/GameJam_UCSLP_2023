@@ -14,8 +14,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] ParticleManager Particle;
     private Animator animator;
     [SerializeField] public bool Hide;
-
-    [SerializeField] private Eyes eyes;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,12 +50,23 @@ public class PlayerMovement : MonoBehaviour
         } else {
             Eyes.animator.SetBool("Rock Face", true);
         }
+
+        //Infinite Map
+        if (transform.position.x >= 42){
+            Vector3 newPos = transform.position;
+            newPos.x = -42;
+            transform.position = newPos;
+        } else if(transform.position.x <= -42){
+            Vector3 newPos = transform.position;
+            newPos.x = 42;
+            transform.position = newPos;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.CompareTag("Enemy")){
-            GameManager.GameStat = "GameOver";
+            Manager.GameOver();
         }
 
     }
@@ -87,6 +96,10 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy")){
             GameObject Exclamation = Particle.RequestExclamationSign();
             Exclamation.transform.position = new Vector2(transform.position.x, transform.position.y + 0.9f);
+        }
+
+        if(other.gameObject.CompareTag("Weapon Coin")){
+            Destroy(other.gameObject);
         }
     }
 }
