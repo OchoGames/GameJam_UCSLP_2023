@@ -1,29 +1,28 @@
+using System;
+using System.Dynamic;
 using System.Linq.Expressions;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.CompilerServices;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
-    [Header("Estado de juego")]
-    public GameState currentGameState;
-
     [SerializeField] private GameObject Blood;
-    public static float BloodPosY;
-    
-    //[SerializeField] public static string GameStat;
+    [SerializeField] private float VelBlood;
+    [Header("Estado de juego")]
+    [SerializeField] public static string GameStat;
+    [SerializeField] Vector3 AAA;
+    private float SorteoF;
+    [SerializeField] private int SorteoInt;
 
 
     void Awake()
     {
-        // Singleton
-        if (Instance == null){
-            Instance = this;
+        if (GameManager.Instance == null){
+            GameManager.Instance = this;
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
@@ -32,94 +31,49 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BloodPosY = 800;
-        SetNewGameState(GameState.mainMenu);
+        GameObject Blood = GameObject.Find("GameOverBG");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Blood.transform.position = new Vector3(378.5f, BloodPosY, 0);
-
-        if (Input.GetKeyDown(KeyCode.F)) {
-            BloodPosY = 800;
-            //GameStat = "GameOver";
-            SetNewGameState(GameState.gameOver);
-        } else if (Input.GetKeyDown(KeyCode.G)) {
-            //GameStat = "PlayMode";
-            SetNewGameState(GameState.inGame);
-        }
-    
+        //Blood.transform.position = new Vector3(AAA.x, AAA.y, AAA.z);
+        if (Input.GetKeyDown(KeyCode.F)){
+            GameOver();
+            } else if (Input.GetKeyDown(KeyCode.G)){
+                TryAgain();
+            }
         //Estado de Juego
-        // **Cambie el GameState a una funcion para hacerlo mas modular**
-        
-        /*switch (GameStat){
+        switch (GameStat){
             case "GameOver":
-                //Muerte de personaje
-                Blood.SetActive(true);
-                if (Blood.transform.position.y <= 80){
-                    BloodPosY = 80;
+            if (Blood.transform.position.y < 420 && Blood.transform.position.y > 380){
+                Blood.transform.position = new Vector3(400, 400, 0);
                 } else {
 
-                    BloodPosY -= 1500 * Time.deltaTime;
+                Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
                 }
             break;
 
             case "PlayMode":
-                BloodPosY = 800;
-                Blood.SetActive(false);
+            if (Blood.transform.position.y < -790 && Blood.transform.position.y > -810){
+                Blood.transform.position = new Vector3(400, -800, 0);
+                } else {
+                Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
+                }
             break;
-        }*/
+        }
     }
+    public void GameOver(){
+        Blood.transform.position = new Vector3(400, 1600, 0);
+        GameStat = "GameOver";
+    }
+
+    public void TryAgain(){
+        GameStat = "PlayMode";
+    }
+
 
     public void LvlComplete(){
         print("Nivel Completado");
     }
-
-    public void SetNewGameState(GameState newGameState)
-    {
-        // Esta funcion se utiliza para manejar los estados del juego
-        switch (newGameState)
-        {
-            case GameState.mainMenu:
-                Time.timeScale = 0;
-            break;
-
-            case GameState.inGame: // Es igual al PlayMode
-                Time.timeScale = 1;
-                BloodPosY = 800;
-                Blood.SetActive(false);
-            break;
-
-            case GameState.pause:
-                Time.timeScale = 0;
-            break;
-
-            case GameState.gameOver:
-                Time.timeScale = 0.7f;
-                //Muerte de personaje
-                Blood.SetActive(true);
-                if (Blood.transform.position.y <= 80)
-                {
-                    BloodPosY = 80;
-                }
-                else
-                {
-
-                    BloodPosY -= 1500 * Time.deltaTime;
-                }
-            break;
-        }
-
-        currentGameState = newGameState;
-    }
-}
-
-public enum GameState
-{
-    // Aqui se declaran los estados del juego
-    mainMenu,
-    inGame,
-    pause,
-    gameOver
 }
