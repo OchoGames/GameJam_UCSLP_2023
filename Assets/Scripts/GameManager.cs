@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     [Header("Estado de juego")]
     public GameState currentGameState;
+    public int score;
 
     [SerializeField] private GameObject Blood;
     [SerializeField] private float VelBlood;
@@ -97,6 +98,11 @@ public class GameManager : MonoBehaviour
         SetNewGameState(GameState.inGame);
     }
 
+    public void StartGame()
+    {
+        SetNewGameState(GameState.inGame);
+    }
+
 
     public void LvlComplete(){
         print("Nivel Completado");
@@ -106,11 +112,11 @@ public class GameManager : MonoBehaviour
     {
         switch (newGameState)
         {
-            case GameState.mainMenu:
+            case GameState.mainMenu: // Es para el menu principal
                 Time.timeScale = 0;
                 break;
 
-            case GameState.inGame:
+            case GameState.inGame: // Para cuando se esta jugando
                 Time.timeScale = 1;
                 if (Blood.transform.position.y < -790 && Blood.transform.position.y > -810)
                 {
@@ -122,11 +128,11 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case GameState.pause:
+            case GameState.pause: // Cuando pones pausa
                 Time.timeScale = 0;
                 break;
 
-            case GameState.gameOver:
+            case GameState.gameOver:// Para el game over
                 Time.timeScale = 0;
                 if (Blood.transform.position.y < 420 && Blood.transform.position.y > 380)
                 {

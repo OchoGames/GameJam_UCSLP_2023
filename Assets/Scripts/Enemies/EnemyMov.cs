@@ -14,16 +14,16 @@ public class EnemyMov : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         pared = false;
         x = Random.Range(-1, 1);
-        y = Random.Range(-1, 1);
+        //y = Random.Range(-1, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (/*GameManager.Instance.currentGameState == GameState.pause*/true)
+        if (GameManager.Instance.currentGameState == GameState.inGame)
         {
 
-            rb.velocity = new Vector2 (x, y) * speed;
+            rb.velocity = new Vector2 (x, 0) * speed;
             
             //rb.velocity = new Vector3(x, y, 0) * speed;
 
@@ -31,7 +31,7 @@ public class EnemyMov : MonoBehaviour
             {
                 pared = false;
                 x *= -1;
-                y *= -1;
+                //y *= -1;
             }
         }
     }
