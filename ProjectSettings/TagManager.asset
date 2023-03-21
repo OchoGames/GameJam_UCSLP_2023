@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Wall
   - Weapon Coin
+  - EnemyFinal
+  - Bala
+  - Object
   layers:
   - Default
   - TransparentFX

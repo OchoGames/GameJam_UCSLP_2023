@@ -6,6 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +24,16 @@ public class GameManager : MonoBehaviour
     private float SorteoF;
     [SerializeField] private int SorteoInt;
 
+    [Header("Paneles")]
+    [SerializeField] private GameObject MainMenuPanel;
+    [SerializeField] private GameObject CreditsPanel;
+    [SerializeField] private GameObject InstructionsPanel;
+    [SerializeField] private GameObject GameOverPanel;
+    [SerializeField] private GameObject PausePanel;
+    [SerializeField] private GameObject GameCompleted;
+
+    private AudioSource audio;
+
 
     void Awake()
     {
@@ -33,22 +45,18 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GameObject Blood = GameObject.Find("GameOverBG");
+        SetNewGameState(GameState.mainMenu);
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Blood.transform.position = new Vector3(AAA.x, AAA.y, AAA.z);
-        if (Input.GetKeyDown(KeyCode.F)){
-            GameOver();
-        } else if (Input.GetKeyDown(KeyCode.G)){
-            TryAgain();
-        }
 
 
         if (currentGameState == GameState.inGame)
         {
+            audio.Play();
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 // Set pausa
@@ -57,6 +65,7 @@ public class GameManager : MonoBehaviour
         }
         else if (currentGameState == GameState.pause)
         {
+            audio.Play();
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 // Set game
@@ -64,48 +73,50 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //Estado de Juego
-        /*switch (GameStat){
-            case "GameOver":
-                if (Blood.transform.position.y < 420 && Blood.transform.position.y > 380){
-                    Blood.transform.position = new Vector3(400, 400, 0);
-                } else {
-
-                    Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
-            break;
-
-            case "PlayMode":
-                if (Blood.transform.position.y < -790 && Blood.transform.position.y > -810)
-                {
-                    Blood.transform.position = new Vector3(400, -800, 0);
-                }
-                else
-                {
-                    Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
-            break;
-        }*/
     }
     public void GameOver(){
-        Blood.transform.position = new Vector3(400, 1600, 0);
         //GameStat = "GameOver";
         SetNewGameState(GameState.gameOver);
     }
 
     public void TryAgain(){
+        audio.Play();
         //GameStat = "PlayMode";
         SetNewGameState(GameState.inGame);
     }
 
     public void StartGame()
     {
+        audio.Play();
         SetNewGameState(GameState.inGame);
     }
 
+    public void Instructions(){
+        audio.Play();
+        SetNewGameState(GameState.instructions);
+    }
+
+    public void GoToMenu(){
+        audio.Play();
+        SceneManager.LoadScene("Game");
+    }
+
+    public void Credits(){
+        audio.Play();
+        SetNewGameState(GameState.credits);
+    }
 
     public void LvlComplete(){
-        print("Nivel Completado");
+        SetNewGameState(GameState.gamecompleted);
+    }
+
+    public void pause(){
+        audio.Play();
+        if(currentGameState == GameState.inGame){
+            SetNewGameState(GameState.pause);
+        } else if(currentGameState == GameState.pause){
+            SetNewGameState(GameState.inGame);
+        }
     }
 
     public void SetNewGameState(GameState newGameState)
@@ -113,36 +124,50 @@ public class GameManager : MonoBehaviour
         switch (newGameState)
         {
             case GameState.mainMenu: // Es para el menu principal
-                Time.timeScale = 0;
+                MainMenuPanel.SetActive(true);
+                CreditsPanel.SetActive(false);
+                InstructionsPanel.SetActive(false);
+                GameOverPanel.SetActive(false);
+                PausePanel.SetActive(false);
+                GameCompleted.SetActive(false);
+                Time.timeScale = 1;
+                break;
+
+            case GameState.credits: // Para los creditos
+                CreditsPanel.SetActive(true);
+                MainMenuPanel.SetActive(false);
+                GameCompleted.SetActive(false);
                 break;
 
             case GameState.inGame: // Para cuando se esta jugando
+                MainMenuPanel.SetActive(false);
+                InstructionsPanel.SetActive(false);
+                GameOverPanel.SetActive(false);
+                PausePanel.SetActive(false);
                 Time.timeScale = 1;
-                if (Blood.transform.position.y < -790 && Blood.transform.position.y > -810)
-                {
-                    Blood.transform.position = new Vector3(400, -800, 0);
-                }
-                else
-                {
-                    Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
+                break;
+
+            case GameState.instructions: // Para las instrucciones
+                InstructionsPanel.SetActive(true);
+                MainMenuPanel.SetActive(false);
+                break;
+
+            case GameState.tryAgain: // Para cuando se pierde
+                GameOverPanel.SetActive(true);
+                Time.timeScale = 1;
                 break;
 
             case GameState.pause: // Cuando pones pausa
+                PausePanel.SetActive(true);
                 Time.timeScale = 0;
                 break;
 
             case GameState.gameOver:// Para el game over
+                GameOverPanel.SetActive(true);
                 Time.timeScale = 0;
-                if (Blood.transform.position.y < 420 && Blood.transform.position.y > 380)
-                {
-                    Blood.transform.position = new Vector3(400, 400, 0);
-                }
-                else
-                {
-
-                    Blood.transform.Translate(0, VelBlood * Time.deltaTime, 0);
-                }
+                break;
+            case GameState.gamecompleted:
+                GameCompleted.SetActive(true);
                 break;
         }
 
@@ -153,7 +178,11 @@ public class GameManager : MonoBehaviour
 public enum GameState
 {
     mainMenu,
+    credits,
+    instructions,
     inGame,
+    tryAgain,
     pause,
-    gameOver
+    gameOver,
+    gamecompleted
 }

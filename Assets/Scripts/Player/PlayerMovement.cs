@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,12 +15,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] ParticleManager Particle;
     private Animator animator;
     [SerializeField] public bool Hide;
+    [SerializeField] private GameObject Weapon;
+    public static bool HasWeapon;
+    [SerializeField] private GameObject Pared;
+
+    private AudioSource audio;
+    [SerializeField] private GameObject EnemiesFinal;
+    [SerializeField] private int Objetos;
+
     // Start is called before the first frame update
     void Start()
     {
+        HasWeapon = false;
         PlayerRB = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         Hide = false;
+        Weapon = GameObject.Find("Weapon");
+        Weapon.SetActive(false);
+        audio = GetComponent<AudioSource>();
+        EnemiesFinal.SetActive(false);
+        Pared = GameObject.Find("Pared abajo");
     }
 
     // Update is called once per frame
@@ -63,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
                 newPos.x = 42;
                 transform.position = newPos;
             }
+
+            if (transform.position.y >= 66){
+                GameManager.Instance.LvlComplete();
+            }
         }
     }
 
@@ -71,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
         if(other.gameObject.CompareTag("Enemy")){
             //Manager.GameOver();
             GameManager.Instance.SetNewGameState(GameState.gameOver);
+            audio.Play();
         }
 
     }
@@ -101,10 +121,8 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy")){
             GameObject Exclamation = Particle.RequestExclamationSign();
             Exclamation.transform.position = new Vector2(transform.position.x, transform.position.y + 0.9f);
-        }
-
-        if(other.gameObject.CompareTag("Weapon Coin")){
-            Destroy(other.gameObject);
+            GameManager.Instance.SetNewGameState(GameState.gameOver);
+            audio.Play();
         }
     }
 }

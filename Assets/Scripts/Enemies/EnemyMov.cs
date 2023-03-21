@@ -5,33 +5,52 @@ using UnityEngine;
 public class EnemyMov : MonoBehaviour
 {
     Rigidbody2D rb;
-    public float speed,x,y;
+    public float speed;
     public bool pared;
+    [Header("Options: Vertical / Horizontal")]
+    [SerializeField] private string direction;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         pared = false;
-        x = Random.Range(-1, 1);
-        //y = Random.Range(-1, 1);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.currentGameState == GameState.inGame)
-        {
-
-            rb.velocity = new Vector2 (x, 0) * speed;
-            
-            //rb.velocity = new Vector3(x, y, 0) * speed;
-
+        if (transform.position.x <= -34){
             if (pared)
             {
+                transform.rotation = Quaternion.Euler(0, 0, -90);
                 pared = false;
-                x *= -1;
-                //y *= -1;
+            } else if (!pared){
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                pared = true;
+            }
+            speed *= -1;
+        } else if (transform.position.x >= 34){
+            if (pared)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, -90);
+                pared = false;
+            } else if (!pared){
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                pared = true;
+            }
+            speed *= -1;
+        }
+        if (GameManager.Instance.currentGameState == GameState.inGame)
+        {
+            switch(direction){
+                case "Vertical":
+                    rb.velocity = new Vector2(0, speed);
+                    break;
+                case "Horizontal":
+                    rb.velocity = new Vector2(speed, 0);
+                    break;
             }
         }
     }
@@ -40,7 +59,16 @@ public class EnemyMov : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            pared = true;
+            if (pared)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, -90);
+                pared = false;
+            } else if (!pared){
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                pared = true;
+            }
         }
+
+        speed *= -1;
     }
 }
