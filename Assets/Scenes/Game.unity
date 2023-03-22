@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1576516}
   m_Layer: 0
   m_Name: Limit (3)
-  m_TagString: Limit
+  m_TagString: LimitH
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,7 +215,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 7
 --- !u!50 &8438645
 Rigidbody2D:
   serializedVersion: 4
@@ -250,6 +250,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  x: 0
+  y: 0
   pared: 0
   options: 2
 --- !u!4 &8438647
@@ -2079,6 +2081,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  x: 0
+  y: 0
   pared: 0
   options: 2
 --- !u!58 &586840852
@@ -2096,7 +2100,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 7
 --- !u!50 &586840853
 Rigidbody2D:
   serializedVersion: 4
@@ -2376,7 +2380,7 @@ GameObject:
   - component: {fileID: 692505315}
   m_Layer: 0
   m_Name: Limit (5)
-  m_TagString: Limit
+  m_TagString: LimitD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2776,7 +2780,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 7
 --- !u!50 &750233133
 Rigidbody2D:
   serializedVersion: 4
@@ -2811,6 +2815,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  x: 0
+  y: 0
   pared: 0
   options: 2
 --- !u!4 &750233135
@@ -42158,7 +42164,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 7
 --- !u!50 &1093271454
 Rigidbody2D:
   serializedVersion: 4
@@ -42193,6 +42199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  x: 0
+  y: 0
   pared: 0
   options: 2
 --- !u!4 &1093271456
@@ -42222,7 +42230,7 @@ GameObject:
   - component: {fileID: 1126726760}
   m_Layer: 0
   m_Name: Limit
-  m_TagString: Limit
+  m_TagString: LimitV
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42415,7 +42423,7 @@ GameObject:
   - component: {fileID: 1144993765}
   m_Layer: 0
   m_Name: Limit (1)
-  m_TagString: Limit
+  m_TagString: LimitV
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42473,7 +42481,7 @@ GameObject:
   - component: {fileID: 1146019417}
   m_Layer: 0
   m_Name: Limit (7)
-  m_TagString: Limit
+  m_TagString: LimitD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44828,7 +44836,7 @@ GameObject:
   - component: {fileID: 1971737090}
   m_Layer: 0
   m_Name: Limit (4)
-  m_TagString: Limit
+  m_TagString: LimitD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45149,7 +45157,7 @@ GameObject:
   - component: {fileID: 2007640936}
   m_Layer: 0
   m_Name: Limit (6)
-  m_TagString: Limit
+  m_TagString: LimitD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45501,7 +45509,7 @@ GameObject:
   - component: {fileID: 2069110729}
   m_Layer: 0
   m_Name: Limit (2)
-  m_TagString: Limit
+  m_TagString: LimitH
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

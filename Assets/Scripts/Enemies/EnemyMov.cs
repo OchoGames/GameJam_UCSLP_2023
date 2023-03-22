@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMov : MonoBehaviour
 {
     Rigidbody2D rb;
-    public float speed;
+    public float speed,x,y;
     public bool pared;
     int angle;
     [Header("Options: Vertical / Horizontal")]
@@ -24,6 +24,8 @@ public class EnemyMov : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         pared = false;
         angle = -1;
+        x = 1;
+        y = 1;
     }
 
     // Update is called once per frame
@@ -63,13 +65,13 @@ public class EnemyMov : MonoBehaviour
 
             switch (options){
                 case Options.Vertical:
-                    rb.velocity = new Vector2(0, speed);
+                    rb.velocity = new Vector2(x, speed);
                     break;
                 case Options.Horizontal:
-                    rb.velocity = new Vector2(speed, 0);
+                    rb.velocity = new Vector2(speed, y);
                     break;
                 case Options.Both:
-                    rb.velocity = new Vector2(1, 1) * speed;
+                    rb.velocity = new Vector2(x, y) * speed;
                     break;
             }
         }
@@ -77,23 +79,52 @@ public class EnemyMov : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Limit"))
+        /*if (collision.gameObject.CompareTag("Limit"))
         {
-            speed *= -1;
+            //speed *= -1;
+
+            /*if (rb.position.x > rb.position.y)
+            {
+                x *= -1;
+            }
+            else if (rb.position.x < rb.position.y)
+            {
+                y*= -1;
+            }
+            else
+            {
+                x *= -1;
+                y *= -1;
+            }*/
+
+
+
             angle *= -1;
+            /*x = Random.Range(-1.5f,1.5f);
+            y = Random.Range(-1.5f, 1.5f);*/
             transform.rotation = Quaternion.Euler(angle*180, angle*180, 180*angle);
 
-            /*pared = true;
+        /*pared = true;
 
-            if (pared)
-            {
-                pared = false;
-                transform.rotation = Quaternion.Euler(180, 180, -90);
-                speed *= -1;
-            } else if (!pared){
-                transform.rotation = Quaternion.Euler(-180, -180, 90);
-                pared = true;
-            }*/
+        if (pared)
+        {
+            pared = false;
+            transform.rotation = Quaternion.Euler(180, 180, -90);
+            speed *= -1;
+        } else if (!pared){
+            transform.rotation = Quaternion.Euler(-180, -180, 90);
+            pared = true;
+        }*/
+        //}
+
+        if (collision.name == "Limit (1)")
+        {
+            y *= -1;
+        }
+
+        if (collision.name == "")
+        {
+
         }
     }
 }

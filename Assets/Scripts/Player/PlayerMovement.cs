@@ -6,6 +6,9 @@ using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Singelton para player
+    public static PlayerMovement Instance;
+
     [Header("Player")]
     [SerializeField] private float VelPlayer;
     [SerializeField] private Rigidbody2D PlayerRB;
@@ -14,14 +17,22 @@ public class PlayerMovement : MonoBehaviour
     [Header("Insert 'Particle Manager'")]
     [SerializeField] ParticleManager Particle;
     private Animator animator;
-    [SerializeField] public bool Hide;
+    [SerializeField] public bool hide;
     [SerializeField] private GameObject Weapon;
     public static bool HasWeapon;
-    [SerializeField] private GameObject Pared;
+    //[SerializeField] private GameObject Pared;
 
     private AudioSource audio;
     [SerializeField] private GameObject EnemiesFinal;
     [SerializeField] private int Objetos;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -29,12 +40,12 @@ public class PlayerMovement : MonoBehaviour
         HasWeapon = false;
         PlayerRB = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        Hide = false;
+        hide = false;
         Weapon = GameObject.Find("Weapon");
         Weapon.SetActive(false);
         audio = GetComponent<AudioSource>();
         EnemiesFinal.SetActive(false);
-        Pared = GameObject.Find("Pared abajo");
+        //Pared = GameObject.Find("Pared abajo");
     }
 
     // Update is called once per frame
@@ -62,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
                 Exclamation.transform.position = new Vector2(transform.position.x, transform.position.y + 0.9f);
             }
 
-            if (Hide == false) {
+            if (hide == false) {
                 Eyes.animator.SetBool("Rock Face", false);
             } else {
                 Eyes.animator.SetBool("Rock Face", true);
@@ -82,12 +93,14 @@ public class PlayerMovement : MonoBehaviour
             if (transform.position.y >= 66){
                 GameManager.Instance.LvlComplete();
             }
+
+            Debug.Log("Hide: "+hide);
         }
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Enemy")){
+        if(other.gameObject.CompareTag("Enemy") && !hide){
             //Manager.GameOver();
             GameManager.Instance.SetNewGameState(GameState.gameOver);
             audio.Play();
@@ -99,16 +112,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Wall")){
             if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0){
-                Hide = true;
-            } else {
-                Hide = false;
+                hide = true;
+            }
+            else
+            {
+                hide = false;
             }
         }
     }
 
     void OnCollisionExit2D(Collision2D other)
     {
-        Hide = false;
+        if(other.gameObject.CompareTag("Wall"))
+            hide = false;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -118,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
             GameManager.Instance.LvlComplete();
         }
 
-        if (other.gameObject.CompareTag("Enemy")){
+        if (other.gameObject.CompareTag("Enemy") && !hide){
             GameObject Exclamation = Particle.RequestExclamationSign();
             Exclamation.transform.position = new Vector2(transform.position.x, transform.position.y + 0.9f);
             GameManager.Instance.SetNewGameState(GameState.gameOver);

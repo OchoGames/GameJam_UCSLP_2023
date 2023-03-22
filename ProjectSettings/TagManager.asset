@@ -12,6 +12,9 @@ TagManager:
   - Bala
   - Object
   - Limit
+  - LimitH
+  - LimitV
+  - LimitD
   layers:
   - Default
   - TransparentFX
