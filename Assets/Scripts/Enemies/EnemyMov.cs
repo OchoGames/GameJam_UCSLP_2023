@@ -99,10 +99,10 @@ public class EnemyMov : MonoBehaviour
 
 
 
-            angle *= -1;
+            //angle *= -1;
             /*x = Random.Range(-1.5f,1.5f);
             y = Random.Range(-1.5f, 1.5f);*/
-            transform.rotation = Quaternion.Euler(angle*180, angle*180, 180*angle);
+            //transform.rotation = Quaternion.Euler(angle*180, angle*180, 180*angle);
 
         /*pared = true;
 
@@ -117,14 +117,20 @@ public class EnemyMov : MonoBehaviour
         }*/
         //}
 
-        if (collision.name == "Limit (1)")
+        if (collision.gameObject.CompareTag("LimitV"))
         {
             y *= -1;
         }
 
-        if (collision.name == "")
+        if (collision.gameObject.CompareTag("LimitH"))
         {
+            x *= -1;
+        }
 
+        if (collision.gameObject.CompareTag("LimitD"))
+        {
+            x *= -1;
+            y *= -1;
         }
     }
 }

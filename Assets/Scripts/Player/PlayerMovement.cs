@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     //[SerializeField] private GameObject Pared;
 
     private AudioSource audio;
-    [SerializeField] private GameObject EnemiesFinal;
+    //[SerializeField] private GameObject EnemiesFinal;
     [SerializeField] private int Objetos;
 
     private void Awake()
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         Weapon = GameObject.Find("Weapon");
         Weapon.SetActive(false);
         audio = GetComponent<AudioSource>();
-        EnemiesFinal.SetActive(false);
+        //EnemiesFinal.SetActive(false);
         //Pared = GameObject.Find("Pared abajo");
     }
 
