@@ -1065,8 +1065,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: infiltrate enemy bases withuot being discovered and find collect the 6
-    objects.
+  m_text: infiltrate enemy bases without being discovered.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d933ab025b8ad3479b712edf27380ca, type: 2}
   m_sharedMaterial: {fileID: 1644794539844544190, guid: 3d933ab025b8ad3479b712edf27380ca, type: 2}
